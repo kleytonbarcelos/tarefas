@@ -1,8 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from "react-bootstrap";
 
+import './firebase'
+import {getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 function App(){
   const [tasks, setTasks] = useState([])
+
+
+  const [displayName, setDisplayName] = useState();
+  const [email, setEmail] = useState();
+  const [photoURL, setPhotoURL] = useState();
+  function signInWithGoogle() {
+    const provider = new GoogleAuthProvider()
+    const auth = getAuth();
+    signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      setDisplayName(user.displayName)
+      setEmail(user.email)
+      setPhotoURL(user.photoURL)
+    }).catch((error) => {
+      console.log(error)
+      // Handle Errors here.
+      // error.code;
+      // error.message;
+      // error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+  }
 
   useEffect(() => {
     let response = localStorage.getItem("tasks");
@@ -82,6 +113,13 @@ function App(){
   const [tarefaNome, setTarefaNome] = useState();
 
   return (
+    <>
+    <nav className="navbar navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="/"><i className="fab fa-servicestack"></i> Quick Tarefas - <span>{displayName}</span></a>
+        <div><button className="btn btn-light" onClick={signInWithGoogle}><i className="fas fa-sign-out-alt"></i> Sair</button></div>
+      </div>
+    </nav>
     <div className="container">
       <Modal
         show={show}
@@ -135,35 +173,15 @@ function App(){
               <div>
                 <span className="badge rounded-pill bg-secondary hand me-2" onClick={()=>editTask(task.id)}>Editar</span>
                 <span className="badge rounded-pill bg-danger hand" onClick={()=>removeTask(task.id)}>Excluir</span>
-                {/* <span className="me-2 badge bg-secondary hand" onClick={()=>editTask(task.id)}><i class="fa fa-edit" aria-hidden="true"></i> Editar</span>
+                {/* <span className="me-2 badge bg-secondary hand" onClick={()=>editTask(task.id)}><i className="fa fa-edit" aria-hidden="true"></i> Editar</span>
                 <span className="badge bg-danger hand" onClick={()=>removeTask(task.id)}>Excluir</span> */}
               </div>
             </li>
           ))}
         </ul>
       </div>
-      {/* <div className="modal fade" show={show} onHide={handleClose} ref={modalRef} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Editar tarefa</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <input type="hidden" className="form-control" id="tarefaId" />
-              <div className="mb-3">
-                <label for="tarefa" className="form-label">Tarefa</label>
-                <input type="text" className="form-control" id="tarefa" placeholder="Tarefa" />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-              <button type="button" className="btn btn-primary" onClick={()=>editTaskSave()}>Salvar</button>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
+    </>
   );
 }
 
