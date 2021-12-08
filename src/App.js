@@ -7,30 +7,24 @@ import {getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 function App(){
   const [tasks, setTasks] = useState([])
 
-
   const [displayName, setDisplayName] = useState();
   const [email, setEmail] = useState();
   const [photoURL, setPhotoURL] = useState();
-  function signInWithGoogle() {
+
+  function signInWithGoogle(){
     const provider = new GoogleAuthProvider()
     const auth = getAuth();
     signInWithPopup(auth, provider)
     .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      // The signed-in user info.
       const user = result.user;
+      console.log(user);
       setDisplayName(user.displayName)
       setEmail(user.email)
       setPhotoURL(user.photoURL)
     }).catch((error) => {
       console.log(error)
-      // Handle Errors here.
-      // error.code;
-      // error.message;
-      // error.email;
-      // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
     });
   }
@@ -80,29 +74,7 @@ function App(){
   function removeTask(id) {
     let newtasks = tasks.filter((item) => parseInt(item.id) !== parseInt(id));
     setTasks(newtasks);
-    //let newSelecteds = selecteds.filter((item) => item != id);
-    //setSelecteds(newSelecteds);
   }
-  // function removeMultipleTasks() {
-  //   let newtasks = tasks.filter((item) => {
-  //     if (!selecteds.includes(item.id)) {
-  //       return item;
-  //     }
-  //   });
-  //   setTasks(newtasks);
-  //   setSelecteds([]);
-  // }
-  // async function handleSelectedItem(id) {
-  //   if (selecteds.includes(id)) {
-  //     setSelecteds(selecteds.filter((item) => item !== id));
-  //   } else {
-  //     setSelecteds([...selecteds, id]);
-  //   }
-  // }
-  // async function deleteTasks() {
-  //   localStorage.clear();
-  //   setTasks([]);
-  // }
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -114,13 +86,32 @@ function App(){
 
   return (
     <>
-    <nav className="navbar navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg" style={{'background-color':'#e3f2fd'}}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/"><i className="fab fa-servicestack"></i> Quick Tarefas - <span>{displayName}</span></a>
-        <div><button className="btn btn-light" onClick={signInWithGoogle}><i className="fas fa-sign-out-alt"></i> Sair</button></div>
+        <div className="d-flex align-items-center">
+          <div class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+              <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" style={{width:32, height:32, borderRadius:'50%'}} src={photoURL} /></a>
+              <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
+                  <h6 class="dropdown-header d-flex align-items-center">
+                      <img class="dropdown-user-img me-3" style={{width:64, height:64, borderRadius:'5%'}} src={photoURL} />
+                      <div class="dropdown-user-details">
+                          <div class="dropdown-user-details-name">{displayName}</div>
+                          <small class="dropdown-user-details-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfb9a3baa1ae8faea0a3e1aca0a2">{email}</a></small>
+                      </div>
+                  </h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#!">
+                      <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                      Logout
+                  </a>
+              </div>
+          </div>
+        </div>
       </div>
     </nav>
     <div className="container">
+      <button className="btn btn-outline-secondary btn-lg" onClick={signInWithGoogle}>Google Login</button>
       <Modal
         show={show}
         onHide={handleClose}
