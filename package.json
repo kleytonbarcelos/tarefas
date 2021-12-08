@@ -1,5 +1,6 @@
 {
   "name": "tarefas",
+  "homepage": "https://kleytonbarcelos.com/tarefas",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
