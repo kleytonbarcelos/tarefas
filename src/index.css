@@ -1,4 +1,5 @@
 @import url('../node_modules/@fortawesome/fontawesome-free/css/all.min.css');
+@import url('../node_modules/react-toastify/dist/ReactToastify.min.css');
 
 
 .hand{
@@ -22,7 +23,7 @@
 
 
 
-
+/* LOGIN.CSS */
 body {
   background: #007bff;
   background: linear-gradient(to right, #0062E6, #33AEFF);
@@ -43,3 +44,4 @@ body {
   color: white !important;
   background-color: #3b5998;
 }
+/* LOGIN.CSS */

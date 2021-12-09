@@ -7,10 +7,13 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 import App from './App';
 
+import {AuthProvider} from './providers/auth'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
