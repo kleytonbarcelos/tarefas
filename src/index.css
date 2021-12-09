@@ -1,5 +1,6 @@
 @import url('../node_modules/@fortawesome/fontawesome-free/css/all.min.css');
 
+
 .hand{
   cursor: pointer;
 }
@@ -10,4 +11,35 @@
     font-size : .875rem;
     line-height : .5;
     border-radius: .2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+.btn-google {
+  color: white !important;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white !important;
+  background-color: #3b5998;
 }
